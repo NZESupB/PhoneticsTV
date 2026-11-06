@@ -13,3 +13,9 @@ captures/
 keystore.properties
 *.jks
 *.hprof
+
+# 本机签名材料（含密码），仅本地保留，切勿提交
+keystore/
+keystore.properties.bak
+*.keystore
+*.jks.bak

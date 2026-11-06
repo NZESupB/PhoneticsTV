@@ -17,6 +17,8 @@ jobs:
     name: 构建 arm64-v8a / armeabi-v7a Release APK
     runs-on: ubuntu-latest
     timeout-minutes: 40
+    permissions:
+      contents: write # tag 构建需要创建 Release 并上传 APK
 
     steps:
       - name: 检出代码

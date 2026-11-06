@@ -89,5 +89,13 @@ CI 的质量门禁与本地一致：`ktlintCheck`、`testDebugUnitTest`、`lintD
 | `KEY_PASSWORD` | 密钥密码（与 keystore 密码相同时可省略） |
 
 未配置 `KEYSTORE_BASE64` 时，CI 用 `keytool` 生成一次性密钥并给出 warning：APK 可直接安装测试，
-但签名每次构建都会变，**不能用于覆盖安装升级或上架**。本地构建同理：没有 `keystore.properties` 时
-输出 `*-release-unsigned.apk`。
+但签名每次构建都会变，**不能用于覆盖安装升级或上架**。
+
+### 本地签名（可选）
+
+本机签名材料放在 `keystore/release.jks` + 仓库根 `keystore.properties`（两者都已在 `.gitignore` 中），
+格式为 `storeFile=keystore/release.jks`、`storePassword`、`keyAlias`、`keyPassword`。
+存在这两个文件时，本地 `./gradlew :app:assembleRelease` 产出的 APK 与 CI 使用同一证书，
+可互相覆盖安装；缺失时输出 `*-release-unsigned.apk`。
+
+改签名密钥意味着已安装的应用无法再覆盖升级（Android 校验签名），务必保留 `keystore/release.jks` 的备份。

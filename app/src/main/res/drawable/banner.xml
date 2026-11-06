@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Leanback 首页横幅（320x180dp 比例），用矢量实现以免依赖位图素材。 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <path
+        android:fillColor="#0F1724"
+        android:pathData="M0,0h320v180H0z" />
+    <path
+        android:fillColor="#1B2A44"
+        android:pathData="M0,132h320v48H0z" />
+    <path
+        android:fillColor="#4F8DFD"
+        android:pathData="M20,44h4v96h-4z" />
+    <path
+        android:fillColor="#27405F"
+        android:pathData="M30,44h2v96h-2z" />
+    <path
+        android:fillColor="#EAF1FF"
+        android:pathData="M48,52h132c2.2,0 4,1.8 4,4v6c0,2.2 -1.8,4 -4,4h-132c-2.2,0 -4,-1.8 -4,-4v-6c0,-2.2 1.8,-4 4,-4z" />
+    <path
+        android:fillColor="#9FB6D9"
+        android:pathData="M48,84h96v8h-96z" />
+    <path
+        android:fillColor="#9FB6D9"
+        android:pathData="M48,100h72v8h-72z" />
+    <path
+        android:fillColor="#4F8DFD"
+        android:pathData="M48,120h56v10h-56z" />
+    <path
+        android:fillColor="#6EE7C7"
+        android:pathData="M240,50m-34,0a34,34 0,1 1,68 0a34,34 0,1 1,-68 0" />
+    <path
+        android:fillColor="#0F1724"
+        android:pathData="M240,62v-8a16,16 0,1 0,-16 -16h10a8,8 0,1 1,8 8h-2v16z" />
+</vector>

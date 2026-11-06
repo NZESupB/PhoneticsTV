@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">英语音标学习</string>
+
+    <!-- 首页 -->
+    <string name="tab_vowels">元音 · 20</string>
+    <string name="tab_consonants">辅音 · 28</string>
+    <string name="tab_quiz">练习</string>
+    <string name="browse_hint">按方向键移动焦点，按确认键进入音标详情并试听发音</string>
+    <string name="browse_selected_tip">发音要领</string>
+    <string name="browse_selected_examples">示例单词</string>
+
+    <!-- 详情页 -->
+    <string name="detail_play">再听一遍</string>
+    <string name="detail_practice">练这个音</string>
+    <string name="detail_back">返回列表</string>
+    <string name="detail_examples_title">示例单词</string>
+    <string name="detail_replay_word">朗读</string>
+
+    <!-- 播放状态 -->
+    <string name="playback_hint">按确认键试听</string>
+
+    <!-- 禁用字符串格式化 lint 对占位的误报由代码侧保证 -->
+    <string name="error_prefix">无法播放：%1$s</string>
+</resources>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  电视端尺寸基准。
+
+  Android TV 的 4K 设备通常保留 1920x1080 的逻辑分辨率（density 从 320 提高到 640），
+  因此 dp 数值不需要按像素翻倍；真正需要保证的是：
+  1. 任何尺寸都随 density 正确缩放（用 dp/sp，不用 px）；
+  2. 逻辑分辨率变化（如 960x540dp、1280x720dp）时布局仍不裁切——这由 values-sw*/values-w* 限定符里的
+     同名字号覆盖实现，见 values-sw960dp 与 values-w1280dp。
+
+  修改尺寸时请同步这三份 dimens，避免大屏/小屏下字号失衡。
+-->
+<!--
+  Android TV 4K 适配说明：
+
+  4K 电视并不会让应用"像素翻倍"——DisplayManager 通常保留 1920x1080 的逻辑分辨率
+  （density 从 320 提升到 640），因此 dp 数值保持不变即正确。
+  真正需要处理的是**逻辑宽度不同的设备**（如 960dp、1280dp、1920dp）：
+  同一条 30sp 标题在 960dp 屏上会占掉三分之一宽度。
+
+  所以字号提供三档：基准（本文件）、*_compact（逻辑宽 < 1000dp）、*_large（>= 1500dp），
+  由 ui/theme/TvTypography.kt 按 LocalConfiguration.screenWidthDp 在运行时选择。
+  这些档位 MUST 与本文件的基准项一一对应。
+-->
+<resources>
+    <dimen name="tv_inset_horizontal">48dp</dimen>
+    <dimen name="tv_inset_vertical">27dp</dimen>
+    <dimen name="tv_card_spacing">16dp</dimen>
+    <dimen name="tv_row_spacing">24dp</dimen>
+    <dimen name="browse_title_size">30sp</dimen>
+    <dimen name="browse_tab_size">20sp</dimen>
+    <dimen name="browse_preview_title_size">20sp</dimen>
+    <dimen name="browse_preview_tip_size">18sp</dimen>
+    <dimen name="browse_preview_examples_size">16sp</dimen>
+    <dimen name="browse_group_label_size">18sp</dimen>
+    <dimen name="browse_card_width">132dp</dimen>
+    <dimen name="browse_card_symbol_size">40sp</dimen>
+    <dimen name="browse_card_word_size">15sp</dimen>
+    <dimen name="browse_preview_height">96dp</dimen>
+    <dimen name="detail_header_size">22sp</dimen>
+    <dimen name="detail_symbol_size">120sp</dimen>
+    <dimen name="detail_tip_size">18sp</dimen>
+    <dimen name="detail_section_size">20sp</dimen>
+    <dimen name="detail_word_size">20sp</dimen>
+    <dimen name="detail_transcription_size">18sp</dimen>
+    <dimen name="detail_button_size">18sp</dimen>
+    <dimen name="detail_status_size">16sp</dimen>
+    <dimen name="detail_column_spacing">40dp</dimen>
+    <dimen name="detail_symbol_weight">0.42</dimen>
+    <dimen name="quiz_title_size">28sp</dimen>
+    <dimen name="quiz_meta_size">18sp</dimen>
+    <dimen name="quiz_prompt_size">24sp</dimen>
+    <dimen name="quiz_prompt_symbol_size">96sp</dimen>
+    <dimen name="quiz_option_size">26sp</dimen>
+    <dimen name="quiz_option_hint_size">15sp</dimen>
+    <dimen name="quiz_option_width">420dp</dimen>
+    <dimen name="quiz_option_min_height">84dp</dimen>
+    <dimen name="quiz_feedback_size">22sp</dimen>
+    <dimen name="quiz_button_size">20sp</dimen>
+    <dimen name="quiz_choice_size">18sp</dimen>
+    <dimen name="quiz_result_row_size">24sp</dimen>
+    <dimen name="quiz_result_detail_size">17sp</dimen>
+    <dimen name="quiz_result_hint_size">16sp</dimen>
+    <dimen name="quiz_status_size">16sp</dimen>
+
+    <!-- 紧凑档：逻辑宽度 < 1000dp -->
+    <dimen name="browse_title_size_compact">23.4sp</dimen>
+    <dimen name="browse_tab_size_compact">15.6sp</dimen>
+    <dimen name="browse_preview_title_size_compact">15.6sp</dimen>
+    <dimen name="browse_preview_tip_size_compact">14.0sp</dimen>
+    <dimen name="browse_preview_examples_size_compact">12.5sp</dimen>
+    <dimen name="browse_group_label_size_compact">14.0sp</dimen>
+    <dimen name="browse_card_symbol_size_compact">31.2sp</dimen>
+    <dimen name="browse_card_word_size_compact">11.7sp</dimen>
+    <dimen name="detail_header_size_compact">17.2sp</dimen>
+    <dimen name="detail_symbol_size_compact">93.6sp</dimen>
+    <dimen name="detail_tip_size_compact">14.0sp</dimen>
+    <dimen name="detail_section_size_compact">15.6sp</dimen>
+    <dimen name="detail_word_size_compact">15.6sp</dimen>
+    <dimen name="detail_transcription_size_compact">14.0sp</dimen>
+    <dimen name="detail_button_size_compact">14.0sp</dimen>
+    <dimen name="detail_status_size_compact">12.5sp</dimen>
+    <dimen name="quiz_title_size_compact">21.8sp</dimen>
+    <dimen name="quiz_meta_size_compact">14.0sp</dimen>
+    <dimen name="quiz_prompt_size_compact">18.7sp</dimen>
+    <dimen name="quiz_prompt_symbol_size_compact">74.9sp</dimen>
+    <dimen name="quiz_option_size_compact">20.3sp</dimen>
+    <dimen name="quiz_option_hint_size_compact">11.7sp</dimen>
+    <dimen name="quiz_feedback_size_compact">17.2sp</dimen>
+    <dimen name="quiz_button_size_compact">15.6sp</dimen>
+    <dimen name="quiz_choice_size_compact">14.0sp</dimen>
+    <dimen name="quiz_result_row_size_compact">18.7sp</dimen>
+    <dimen name="quiz_result_detail_size_compact">13.3sp</dimen>
+    <dimen name="quiz_result_hint_size_compact">12.5sp</dimen>
+    <dimen name="quiz_status_size_compact">12.5sp</dimen>
+
+    <!-- 大屏档：逻辑宽度 >= 1500dp -->
+    <dimen name="browse_title_size_large">34.5sp</dimen>
+    <dimen name="browse_tab_size_large">23.0sp</dimen>
+    <dimen name="browse_preview_title_size_large">23.0sp</dimen>
+    <dimen name="browse_preview_tip_size_large">20.7sp</dimen>
+    <dimen name="browse_preview_examples_size_large">18.4sp</dimen>
+    <dimen name="browse_group_label_size_large">20.7sp</dimen>
+    <dimen name="browse_card_symbol_size_large">46.0sp</dimen>
+    <dimen name="browse_card_word_size_large">17.2sp</dimen>
+    <dimen name="detail_header_size_large">25.3sp</dimen>
+    <dimen name="detail_symbol_size_large">138.0sp</dimen>
+    <dimen name="detail_tip_size_large">20.7sp</dimen>
+    <dimen name="detail_section_size_large">23.0sp</dimen>
+    <dimen name="detail_word_size_large">23.0sp</dimen>
+    <dimen name="detail_transcription_size_large">20.7sp</dimen>
+    <dimen name="detail_button_size_large">20.7sp</dimen>
+    <dimen name="detail_status_size_large">18.4sp</dimen>
+    <dimen name="quiz_title_size_large">32.2sp</dimen>
+    <dimen name="quiz_meta_size_large">20.7sp</dimen>
+    <dimen name="quiz_prompt_size_large">27.6sp</dimen>
+    <dimen name="quiz_prompt_symbol_size_large">110.4sp</dimen>
+    <dimen name="quiz_option_size_large">29.9sp</dimen>
+    <dimen name="quiz_option_hint_size_large">17.2sp</dimen>
+    <dimen name="quiz_feedback_size_large">25.3sp</dimen>
+    <dimen name="quiz_button_size_large">23.0sp</dimen>
+    <dimen name="quiz_choice_size_large">20.7sp</dimen>
+    <dimen name="quiz_result_row_size_large">27.6sp</dimen>
+    <dimen name="quiz_result_detail_size_large">19.5sp</dimen>
+    <dimen name="quiz_result_hint_size_large">18.4sp</dimen>
+    <dimen name="quiz_status_size_large">18.4sp</dimen>
+</resources>

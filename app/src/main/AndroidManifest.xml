@@ -9,6 +9,9 @@
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
+    <!-- 示例词缺少内置录音时联网获取发音（OnlineWordAudio），失败会回退到设备 TTS。 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:banner="@drawable/banner"

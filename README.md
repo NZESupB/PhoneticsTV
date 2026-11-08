@@ -11,7 +11,7 @@
 | compileSdk / targetSdk / minSdk | 35 / 35 / 23 |
 | AGP / Gradle / Kotlin | 8.13.2 / 8.14 / 2.3.21 |
 | 音标体系 | 英式 DJ 48 音（20 元音 + 28 辅音） |
-| 发音来源 | 内置 48 个音标录音（assets），缺失时设备 TTS（英式英语）朗读示例词 |
+| 发音来源 | 内置 48 个音标录音与 121 个示例词录音（assets，构建前预生成）；示例词缺少录音时联网获取并缓存，再不行用设备 TTS（英式英语）朗读 |
 | 分辨率适配 | 1920×1080dp 基准，字号按逻辑宽度分三档（<1000dp / 1000–1500dp / ≥1500dp） |
 
 ## 快速开始
@@ -38,7 +38,7 @@ adb shell am start -n com.example.phonetics/.MainActivity
 ```
 app/src/main/
 ├─ AndroidManifest.xml              TV 清单项（leanback、banner、横屏）
-├─ assets/audio/README.md           录音命名规范（放置录音即生效）
+├─ assets/audio/README.md           录音命名规范、来源与授权（放置录音即生效）
 ├─ res/                             banner、图标、主题、字符串
 └─ java/com/example/phonetics/
    ├─ MainActivity.kt               播放器容器与 CompositionLocal 注入
@@ -54,11 +54,14 @@ app/src/main/
 ./gradlew :app:ktlintCheck :app:lintDebug :app:testDebugUnitTest :app:assembleDebug
 ```
 
-单元测试覆盖音标数据完整性（数量、分组、示例词音素一致性）、出题规则（唯一正确答案、范围限定、可复现）与练习状态机（作答锁定、判分、统计、重开）。
+单元测试覆盖音标数据完整性（数量、分组、示例词音素一致性）、内置录音完整性（音标与示例词各一套）、出题规则（唯一正确答案、范围限定、可复现）与练习状态机（作答锁定、判分、统计、重开）。
+
+示例词录音由 `tools/generate-word-audio.sh` 生成，新增或修改示例词后需重跑，用法见 `app/src/main/assets/audio/README.md`。
 
 ## 已知限制
 
 - 内置的 48 个音标录音提取自公开网页资源，**未取得明确授权**；本仓库为公开的学习演示项目、不用于商用，需要对外分发或上架时应替换为有授权的音源（见 `app/src/main/assets/audio/README.md`）。
+- 内置的 121 个示例词录音中，52 个是 Wikimedia Commons 的 CC / 公有领域录音（分发时需按 `tools/word-audio-sources.tsv` 署名），69 个来自有道词典的非官方接口；运行时的在线发音默认也走该接口，接口变动时这部分会回退到设备 TTS。
 - 已在 Android TV API 34 模拟器（4K AVD，3840×2160）实测 D-pad 全流程；未在真实电视盒子上验证。
 
 ## 构建产物（GitHub Actions）

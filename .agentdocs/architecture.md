@@ -31,21 +31,36 @@ com.example.phonetics
 
 `AssetOrTtsPlayer` 的查找顺序：
 
-1. `assets/audio/phonemes/<id>.<ext>`
-2. `assets/audio/words/<文本>.<ext>`
-3. 设备 TTS（`Locale.UK`）朗读示例单词
+- 音标：`assets/audio/phonemes/<id>.<ext>` → 设备 TTS（`Locale.UK`）朗读示例单词
+- 单词：`assets/audio/words/<文本>.<ext>` → 在线缓存 → `OnlineWordAudio` 在线下载 → 设备 TTS 朗读
 
-`playAsset` 返回 `false` 表示录音没播成（找不到或损坏），调用方回退到朗读而不是报错停住。失败与"正在朗读哪个词"都通过 `PlayerStatus` 传到界面并用文字说明，不做静默降级。
+`playAsset` / `playFile` 返回 `false` 表示没播成（找不到或损坏），调用方回退到下一级而不是报错停住；损坏的在线缓存会被 `evict`，下次重新下载。失败与"正在朗读哪个词"都通过 `PlayerStatus` 传到界面并用文字说明，不做静默降级。
 
 `PlayerStatus.Playing` 依赖 MediaPlayer 的完成回调和 TTS 的 `onDone` 回到 `Idle`；如果回调丢失，状态会停在 `Playing`（只影响提示文案，不影响功能）。
 
-## 内置音标录音
+### 在线发音
+
+- `audio/OnlineWordAudio` 是纯 JVM 实现（`HttpURLConnection`，无新增依赖）：校验 HTTP 200 与 `audio/*` Content-Type，先写临时文件再改名，失败抛 `IOException` 且不留缓存。缓存文件名是 URL 编码后的小写单词。单测 `OnlineWordAudioTest` 用本地 `ServerSocket` 桩，不访问外网。
+- 默认音源是有道英音（非官方接口，开源非商用项目已决定直接使用）。要换源，只需替换构造参数 `urlFor`；**不要把需要密钥的云 TTS Key 打进 APK**，需要时走自建代理。
+- 播放器内部用 `CoroutineScope(Main.immediate)` 在 IO 线程下载；`requestSeq` 在每次 `stop()` 时自增，下载完成后序号不一致就只缓存不播放，避免切词后串音。`shutdown()` 会取消 scope。
+- 下载期间状态为 `PlayerStatus.Loading`；下载失败且 TTS 不可用时，提示网络与 TTS 都不可用。
+- Manifest 已声明 `INTERNET` 权限，仅用于此功能。
+
+## 内置录音
 
 `assets/audio/phonemes/<Phoneme.id>.mp3` 内置 48 个音标的发音录音（约 2.1 MB），播放时优先于 TTS。
 录制来源与授权状态见 `app/src/main/assets/audio/README.md`；未取得授权前仅限本地开发演示。
 
-录音缺失不会报错（回退朗读示例词），因此由 `PhonemeAudioAssetsTest` 在构建期守住：
-每个音标都要有 mp3、不得有孤儿文件、文件必须是可解码的 MP3、总体积不超过 8 MB。
+`assets/audio/words/<ExampleWord.text>.mp3` 内置 121 个示例词录音（约 2.3 MB），由 `tools/generate-word-audio.sh` **在开发机上预生成**，
+设备端不需要 TTS 引擎、网络或 API Key。音源：Wikimedia Commons 英音真人录音优先，缺失的词由补齐源生成（默认 Azure，需要环境变量里的 Key；`WORD_AUDIO_FALLBACK=youdao` 改用有道）。
+逐词来源与授权登记在 `tools/word-audio-sources.tsv`：52 个来自 Wikimedia（CC 授权，分发时按清单署名），69 个来自有道（开源非商用项目已决定直接使用）。
+
+播放来源分 `PHONEME_RECORDING` / `WORD_RECORDING` / `ONLINE` / `SPEECH` 四种，界面据此显示「正在播放音标 / 正在播放单词 / 正在播放在线发音 / 设备朗读示例词」。
+
+录音缺失不会报错（回退朗读示例词），因此在构建期由测试守住：
+- `PhonemeAudioAssetsTest`：每个音标都要有 mp3、不得有孤儿文件、文件必须是可解码的 MP3、总体积不超过 8 MB。
+- `WordAudioAssetsTest`：每个示例词都要有 mp3、不得有孤儿文件、MP3 文件头有效、`word-audio-sources.tsv` 与示例词一一对应、总体积小于 3 MB。
+  **新增或修改示例词后必须重跑生成脚本**，否则这个测试会失败。
 
 ## 4K 适配
 

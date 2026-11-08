@@ -221,9 +221,12 @@ internal fun PlaybackStatusLine(
             PlayerStatus.Idle -> hint.ifBlank { "按确认键试听" }
             is PlayerStatus.Playing ->
                 when (status.source) {
-                    PlaybackSource.RECORDING -> "正在播放音标 ${status.label}"
+                    PlaybackSource.PHONEME_RECORDING -> "正在播放音标 ${status.label}"
+                    PlaybackSource.WORD_RECORDING -> "正在播放单词 ${status.label}"
+                    PlaybackSource.ONLINE -> "正在播放在线发音：${status.label}"
                     PlaybackSource.SPEECH -> "设备朗读示例词：${status.label}"
                 }
+            is PlayerStatus.Loading -> "正在获取在线发音：${status.label}…"
             is PlayerStatus.Unavailable -> status.message
         }
     val color =

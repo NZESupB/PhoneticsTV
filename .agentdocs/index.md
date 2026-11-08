@@ -20,6 +20,7 @@
 - 所有发音统一走 `audio/PronunciationPlayer`；禁止在界面层直接使用 `MediaPlayer` / `TextToSpeech`。
 - 缺少录音时朗读示例单词，不合成单音素（TTS 读孤立音素会失真）。
 - 48 个音标录音已内置在 `assets/audio/phonemes/`，由 `PhonemeAudioAssetsTest` 守护完整性；来源与授权见 `assets/audio/README.md`。
+- 121 个示例词录音已内置在 `assets/audio/words/`，由 `tools/generate-word-audio.sh` 预生成，`WordAudioAssetsTest` 守护；新增或修改示例词后必须重跑脚本。逐词来源登记在 `tools/word-audio-sources.tsv`（Wikimedia 来源分发时需按清单署名）。内置录音缺失的词由 `OnlineWordAudio` 联网获取并缓存（默认有道英音），失败再回退设备 TTS；不要把云 TTS 的 Key 打进 APK。
 - 4K TV 的逻辑分辨率通常仍是 1920×1080（density 640），不要按像素放大 dp；字号必须走 `LocalTvTypography` 的三档，不要写死 sp。
 - UI 组件使用 `androidx.tv.material3`，不要混入 `androidx.compose.material3`（两套主题与焦点样式不兼容）。
 - Compose 依赖固定在 BOM 2026.02.00（Compose 1.10.3）：升级到 1.11+ 会要求 compileSdk 37 与 AGP 9.x。

@@ -6,8 +6,14 @@ import kotlinx.coroutines.flow.StateFlow
 
 /** 播放来源，用于在界面上如实告知用户"听到的是什么"。 */
 enum class PlaybackSource {
-    /** assets 中的真人/离线录音。 */
-    RECORDING,
+    /** assets 中的音标录音。 */
+    PHONEME_RECORDING,
+
+    /** assets 中预生成的示例单词录音。 */
+    WORD_RECORDING,
+
+    /** 在线获取并缓存的单词发音（assets 中没有该词录音时）。 */
+    ONLINE,
 
     /** 设备 TTS 朗读示例单词（缺少录音时的替代方案）。 */
     SPEECH,
@@ -20,6 +26,11 @@ sealed interface PlayerStatus {
     data class Playing(
         val label: String,
         val source: PlaybackSource,
+    ) : PlayerStatus
+
+    /** 正在联网获取 [label] 的发音，获取失败会回退到设备朗读。 */
+    data class Loading(
+        val label: String,
     ) : PlayerStatus
 
     /** 设备不支持英式 TTS 等无法播放的情形，[message] 直接展示给用户。 */

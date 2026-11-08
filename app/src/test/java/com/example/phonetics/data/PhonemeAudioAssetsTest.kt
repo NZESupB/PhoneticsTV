@@ -44,17 +44,7 @@ class PhonemeAudioAssetsTest {
             val bytes = file.readBytes()
             assertTrue("${phoneme.id} 文件过小，可能是空文件或错误页", bytes.size > 8 * 1024)
 
-            // MP3 以 ID3 标签或 MPEG 帧同步字(0xFF 0xEx/0xFx)开头，可据此排除下载到的 HTML 错误页。
-            val header = bytes.take(3).toByteArray()
-            val hasId3 =
-                header.size == 3 &&
-                    header[0] == 'I'.code.toByte() &&
-                    header[1] == 'D'.code.toByte() &&
-                    header[2] == '3'.code.toByte()
-            val first = bytes[0].toInt() and 0xFF
-            val second = bytes[1].toInt() and 0xFF
-            val hasFrameSync = first == 0xFF && (second and 0xE0) == 0xE0
-            assertTrue("${phoneme.id} 不是有效的 MP3 文件", hasId3 || hasFrameSync)
+            assertTrue("${phoneme.id} 不是有效的 MP3 文件", hasMp3Header(bytes))
         }
     }
 

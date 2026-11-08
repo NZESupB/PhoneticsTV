@@ -24,6 +24,6 @@
 - 4K TV 的逻辑分辨率通常仍是 1920×1080（density 640），不要按像素放大 dp；字号必须走 `LocalTvTypography` 的三档，不要写死 sp。
 - UI 组件使用 `androidx.tv.material3`，不要混入 `androidx.compose.material3`（两套主题与焦点样式不兼容）。
 - Compose 依赖固定在 BOM 2026.02.00（Compose 1.10.3）：升级到 1.11+ 会要求 compileSdk 37 与 AGP 9.x。
-- 验证命令见根目录 `AGENTS.md`。
+- 验证命令见根目录 `AGENTS.md`。发版流程：改 `versionCode`/`versionName` → 推 `main` 等 CI 绿 → 打 `v<versionName>` tag 推送，Release 会挂上两个 APK；`versionCode` 必须单调递增，否则覆盖安装会失败。
 - 构建与发布走 GitHub Actions（`.github/workflows/android-release.yml`），`splits.abi` 只包含 `arm64-v8a` 与 `armeabi-v7a`：引入带 so 的 native 依赖时要确认两种 ABI 都有产物，否则老盒子或 64 位设备装不上。
 - Release 签名材料只从仓库根 `keystore.properties` 读取（已 gitignore），CI 由 Secrets `KEYSTORE_BASE64` / `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD` 生成；不要把 keystore 或密码写进仓库。正式密钥已配置：本机备份在 `keystore/release.jks`（别名 `phonetics`，密码在同目录 `keystore.properties`，两者均被 gitignore），证书 SHA-256 为 `5ce616db…b13d`——换密钥会导致已安装应用无法覆盖升级。
